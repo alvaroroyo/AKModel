@@ -31,7 +31,7 @@ class CoreDataMOC {
         
         let directoryURL = URL(fileURLWithPath: directoryPath)
         
-        let storeURL = directoryURL.appendingPathComponent(DATA_MODEL_NAME + ".sqlite")
+        let storeURL = directoryURL.appendingPathComponent(CoreDataMOC.DATA_MODEL_NAME + ".sqlite")
         
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: getManagedObjectModel())
 
@@ -49,7 +49,7 @@ class CoreDataMOC {
     
     private func getManagedObjectModel() -> NSManagedObjectModel {
         
-        let modelURL = Bundle.main.url(forResource: DATA_MODEL_NAME, withExtension: "momd")
+        let modelURL = Bundle.main.url(forResource: CoreDataMOC.DATA_MODEL_NAME, withExtension: "momd")
         
         let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL!)
         
