@@ -16,7 +16,7 @@ class AKWebServiceManager {
         self.queue = queue
     }
     
-    func requestOperation(type:AKWebServiceOperationType, path:String!, parameters:[String:Any]?, body:Data?, headers:[String:String]?, timeOut:TimeInterval?, _queue:OperationQueue?, completionBlock:((Bool,Data?) -> Swift.Void)?){
+    func requestOperation(type:AKWebServiceOperationType, path:String!, parameters:[String:Any]?, body:Data?, headers:[String:String]?, timeOut:TimeInterval?, _queue:OperationQueue?, completionBlock:((Bool,Data?,Int) -> Swift.Void)?){
         
         let operation = AKWebServiceOperation.init(type: type, path: path, parameters: parameters, headers: headers)
         
@@ -27,6 +27,11 @@ class AKWebServiceManager {
         if completionBlock != nil { operation.customCompletionBlock = completionBlock }
         
         if(timeOut != nil) {
+            
+            if timeOut! < 10 {
+                print("AKWebServiceManager -> timeOut may be to short. (\(timeOut!.description))")
+            }
+            
             operation.timeOut = timeOut!
         }
         

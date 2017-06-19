@@ -24,7 +24,7 @@ class AKWebServiceOperation: Operation {
     
     var body:Data? = nil
     var timeOut:TimeInterval = 60
-    var customCompletionBlock:((Bool,Data?) -> Swift.Void)? = nil
+    var customCompletionBlock:((Bool,Data?,Int) -> Swift.Void)? = nil
     
     init(type:AKWebServiceOperationType, path:String!, parameters:[String:Any]?, headers:[String:String]?){
         super.init()
@@ -50,7 +50,7 @@ class AKWebServiceOperation: Operation {
             self.request.httpMethod = "POST"
             break
         case .NONE:
-            break
+            return
         }
         
         if(self.body != nil){
@@ -66,11 +66,14 @@ class AKWebServiceOperation: Operation {
             if(error != nil){
                 
                 print("Error en ServiceOperation: %@",error!)
-                if self.customCompletionBlock != nil { self.customCompletionBlock!(false,nil) }
+                if self.customCompletionBlock != nil { self.customCompletionBlock!(false,nil,-1) }
                 
             }else{
                 
-                if self.customCompletionBlock != nil { self.customCompletionBlock!(true,responseData!) }
+                let httpResponse = urlResponse as! HTTPURLResponse
+                let status = httpResponse.statusCode
+                
+                if self.customCompletionBlock != nil { self.customCompletionBlock!(true,responseData!,status) }
                 
             }
             
